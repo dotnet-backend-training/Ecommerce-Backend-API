@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Core\\Ecommerce_Backend_Core.csproj": {}
+    "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Infrastructure\\Ecommerce_Backend_Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Core\\Ecommerce_Backend_Core.csproj": {
+    "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Infrastructure\\Ecommerce_Backend_Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Core\\Ecommerce_Backend_Core.csproj",
-        "projectName": "Ecommerce_Backend_Core",
-        "projectPath": "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Core\\Ecommerce_Backend_Core.csproj",
+        "projectUniqueName": "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Infrastructure\\Ecommerce_Backend_Infrastructure.csproj",
+        "projectName": "Ecommerce_Backend_Infrastructure",
+        "projectPath": "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Infrastructure\\Ecommerce_Backend_Infrastructure.csproj",
         "packagesPath": "C:\\Users\\diaa1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Core\\obj\\",
+        "outputPath": "C:\\Users\\diaa1\\Documents\\asp-backend-projects\\Ecommerce-Backend-API\\Ecommerce_Backend_API\\Ecommerce_Backend_Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,12 +49,6 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
