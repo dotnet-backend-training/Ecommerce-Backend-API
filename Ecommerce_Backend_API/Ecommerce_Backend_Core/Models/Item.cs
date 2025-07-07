@@ -9,6 +9,7 @@ namespace Ecommerce_Backend_Core.Models
         public required string Name { get; set; }
         public string? Description { get; set; }
         public double Price { get; set; }
+        public ICollection<InventoryItemStore> InventoryItemStore { get; set; } = new HashSet<InventoryItemStore>();
 
         [ForeignKey(nameof(MainGroup))]
         public int MainGroupId { get; set; }

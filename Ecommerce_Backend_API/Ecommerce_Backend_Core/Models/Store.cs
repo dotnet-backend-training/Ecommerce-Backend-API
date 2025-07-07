@@ -6,6 +6,7 @@ namespace Ecommerce_Backend_Core.Models
     {
         public int Id { get; set; }
         public required string Name { get; set; }
+        public ICollection<InventoryItemStore> InventoryItemStore { get; set; } = new HashSet<InventoryItemStore>();
 
         [ForeignKey(nameof(Government))]
         public int GovernmentId { get; set; }
