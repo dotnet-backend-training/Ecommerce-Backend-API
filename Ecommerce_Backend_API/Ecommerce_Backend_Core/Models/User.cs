@@ -19,7 +19,7 @@ namespace Ecommerce_Backend_Core.Models
         public required Zone Zone { get; set; }
 
         [ForeignKey(nameof(Classification))]
-        public int Classification_Id { get; set; }
+        public int ClassificationId { get; set; }
         public Classification Classification { get; set; }
     }
 }
