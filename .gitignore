@@ -235,6 +235,11 @@ _pkginfo.txt
 # but keep track of directories ending in .cache
 !?*.[Cc]ache/
 
+# Ignore build output
+bin/
+obj/
+obj/Debug/net8.0/
+
 # Others
 ClientBin/
 ~$*
