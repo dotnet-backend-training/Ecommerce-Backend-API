@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecommerce_Backend_Core.Models
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<int>
     {
         [ForeignKey(nameof(Government))]
         public int GovernmentId {  get; set; }
@@ -21,5 +21,8 @@ namespace Ecommerce_Backend_Core.Models
         [ForeignKey(nameof(Classification))]
         public int ClassificationId { get; set; }
         public Classification Classification { get; set; }
+        
+        public ICollection<CustomerStore> CustomerStores { get; set; } = new HashSet<CustomerStore>();
+        public ICollection<InventoryItemStore> InventoryItems { get; set; } = new HashSet<InventoryItemStore>();
     }
 }
