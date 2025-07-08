@@ -1,4 +1,8 @@
 
+using Ecommerce_Backend_Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+
 namespace Ecommerce_Backend_API
 {
     public class Program
@@ -13,6 +17,18 @@ namespace Ecommerce_Backend_API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // AppDbContext service
+            string connectionString = builder.Configuration
+                .GetConnectionString("DefaultConnection") ?? 
+                throw new InvalidOperationException
+                (
+                    "Connection string was not found in the application configuration."
+                );
+
+            builder.Services.AddDbContext<AppDbContext>((options)=> {
+                options.UseSqlServer(connectionString);
+            });
 
             var app = builder.Build();
 
