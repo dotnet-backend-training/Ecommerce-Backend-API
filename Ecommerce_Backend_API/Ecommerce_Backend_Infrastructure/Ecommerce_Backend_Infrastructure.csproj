@@ -10,4 +10,8 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ecommerce_Backend_Core\Ecommerce_Backend_Core.csproj" />
+  </ItemGroup>
+
 </Project>
