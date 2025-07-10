@@ -1,8 +1,11 @@
 ﻿
+using Ecommerce_Backend_Core.Configurations;
 using Ecommerce_Backend_Core.Models;
+using Ecommerce_Backend_Infrastructure.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Ecommerce_Backend_Infrastructure.Data
 {
@@ -13,21 +16,7 @@ namespace Ecommerce_Backend_Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<ItemUnit>()
-                .HasKey(itemUnit => new { itemUnit.ItemId, itemUnit.UnitId });
-
-            builder.Entity<CustomerStore>().
-                HasKey(customerStore => new { customerStore.StoreId, customerStore.CustomerId });
-
-            builder.Entity<InventoryItemStore>().
-                HasKey(inventoryItemStore => new { inventoryItemStore.StoreId, inventoryItemStore.ItemId });
-
-            builder.Entity<ShoppingCartItems>().
-                HasKey(shoppingCartItems => new { shoppingCartItems.StoreId, shoppingCartItems.CustomerId });
-
-            builder.Entity<InvoiceDetails>()
-                .HasKey(invoiceDetails => new {invoiceDetails.InvoiceId, invoiceDetails.ItemId });
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     
         public DbSet<City> Cities { get; set; }

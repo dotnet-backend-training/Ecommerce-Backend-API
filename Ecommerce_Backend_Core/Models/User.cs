@@ -6,6 +6,11 @@ namespace Ecommerce_Backend_Core.Models
 {
     public class User : IdentityUser<int>
     {
+        public ICollection<CustomerStore> CustomerStores { get; set; } = new HashSet<CustomerStore>();
+        public ICollection<InventoryItemStore> InventoryItems { get; set; } = new HashSet<InventoryItemStore>();
+        public ICollection<Invoice> Invoices { get; set; } = new HashSet<Invoice>();
+        public ICollection<ShoppingCartItems> ShoppingCartItems { get; set; } = new HashSet<ShoppingCartItems>();
+
         [ForeignKey(nameof(Government))]
         public int GovernmentId {  get; set; }
         public required Government Government { get; set; }
@@ -21,8 +26,5 @@ namespace Ecommerce_Backend_Core.Models
         [ForeignKey(nameof(Classification))]
         public int ClassificationId { get; set; }
         public Classification Classification { get; set; }
-        
-        public ICollection<CustomerStore> CustomerStores { get; set; } = new HashSet<CustomerStore>();
-        public ICollection<InventoryItemStore> InventoryItems { get; set; } = new HashSet<InventoryItemStore>();
     }
 }

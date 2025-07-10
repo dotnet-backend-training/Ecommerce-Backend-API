@@ -17,7 +17,5 @@ namespace Ecommerce_Backend_Core.Models
         [ForeignKey(nameof(SubGroup))]
         public int SubGroupId { get; set; }
         public SubGroup SubGroup { get; set; }
-
-
     }
 }

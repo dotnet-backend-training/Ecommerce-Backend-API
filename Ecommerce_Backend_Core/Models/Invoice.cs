@@ -14,6 +14,7 @@ namespace Ecommerce_Backend_Core.Models
         public bool IsPosted { get; set; }
         public bool IsReviewed { get; set; }
         public bool IsClosed { get; set; }
+        public ICollection<InvoiceDetails> InvoiceDetails { get; set; }= new HashSet<InvoiceDetails>();
 
         [ForeignKey(nameof(Customer))]
         public int CustomerId { get; set; }

@@ -16,7 +16,5 @@ namespace Ecommerce_Backend_Core.Models
         [ForeignKey(nameof(City))]
         public int CityId { get; set; }
         public required City City { get; set; }
-
-
     }
 }

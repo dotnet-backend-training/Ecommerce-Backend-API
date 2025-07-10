@@ -18,5 +18,8 @@ namespace Ecommerce_Backend_Core.Models
         public int ItemId {  get; set; }
         public Item Item { get; set; }
 
+        [ForeignKey(nameof(User))]
+        public int UserId { get; set; }
+        public User User { get; set; } 
     }
 }
