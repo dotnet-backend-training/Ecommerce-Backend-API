@@ -11,7 +11,6 @@ namespace Ecommerce_Backend_Core.Models
         public ICollection<Zone> Zones { get; set; } = new HashSet<Zone>();
         public ICollection<Store> Stores { get; set; } = new HashSet<Store>();
 
-        [ForeignKey(nameof(Government))]
         public int GovernmentId { get; set; }
         public required Government Government { get; set; }
 
