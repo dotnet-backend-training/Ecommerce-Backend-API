@@ -12,12 +12,20 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
         {
             builder.HasKey(government => government.Id);
 
+            builder.HasData(
+                new Government { Id = 1, Name = "Egypt" },
+                new Government { Id = 2, Name = "Palestine" },
+                new Government { Id = 3, Name = "Jordan" },
+                new Government { Id = 4, Name = "Lebanon" },
+                new Government { Id = 5, Name = "Syria" }
+            );
+
             /*
              - Government -> User
                 * A Government can have Many Users
                 * A User belong to One Government
             */
-             builder.HasMany(government => government.Users) 
+            builder.HasMany(government => government.Users) 
             .WithOne(user => user.Government)
             .HasForeignKey(user => user.GovernmentId)
             .OnDelete(DeleteBehavior.Restrict);

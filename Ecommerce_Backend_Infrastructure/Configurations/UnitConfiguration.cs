@@ -11,6 +11,14 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
         {
             builder.HasKey(unit => unit.Id);
 
+            builder.HasData(
+               new Unit { Id = 1, Name = "Piece" },
+               new Unit { Id = 2, Name = "Kilogram" },
+               new Unit { Id = 3, Name = "Liter" },
+               new Unit { Id = 4, Name = "Box" },
+               new Unit { Id = 5, Name = "Pack" }
+           );
+
             /*
             * Unit -> ItemUnits.
             * One Unit can be used in Many ItemUnits.

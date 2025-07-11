@@ -11,6 +11,49 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
         {
             builder.HasKey(store => store.Id);
 
+            builder.HasData(
+                         new Store
+                         {
+                             Id = 1,
+                             Name = "Downtown Electronics",
+                             GovernmentId = 1,
+                             CityId = 1,
+                             ZoneId = 1
+                         },
+                         new Store
+                         {
+                             Id = 2,
+                             Name = "City Fashion Outlet",
+                             GovernmentId = 1,
+                             CityId = 2,
+                             ZoneId = 2
+                         },
+                         new Store
+                         {
+                             Id = 3,
+                             Name = "Home Goods Central",
+                             GovernmentId = 2,
+                             CityId = 3,
+                             ZoneId = 3
+                         },
+                         new Store
+                         {
+                             Id = 4,
+                             Name = "Sports Hub",
+                             GovernmentId = 2,
+                             CityId = 4,
+                             ZoneId = 4
+                         },
+                         new Store
+                         {
+                             Id = 5,
+                             Name = "Beauty Essentials",
+                             GovernmentId = 3,
+                             CityId = 5,
+                             ZoneId = 5
+                         }
+                     );
+            
             /*
             * Store -> InventoryItemStores (Join table btw item and store)
             * One Store has Many InventoryItemStores.

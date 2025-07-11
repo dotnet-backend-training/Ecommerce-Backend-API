@@ -11,6 +11,14 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
         {
             builder.HasKey(subGroup => subGroup.Id);
 
+            builder.HasData(
+                new SubGroup { Id = 1, Name = "Mobile Phones", MainGroupId = 1 },
+                new SubGroup { Id = 2, Name = "Laptops", MainGroupId = 1 },
+                new SubGroup { Id = 3, Name = "Men's Wear", MainGroupId = 2 },
+                new SubGroup { Id = 4, Name = "Women's Wear", MainGroupId = 2 },
+                new SubGroup { Id = 5, Name = "Kitchen Appliances", MainGroupId = 3 }
+            );
+
             /*
             * SubGroup -> Items.
             * SubGroup has Many Items.

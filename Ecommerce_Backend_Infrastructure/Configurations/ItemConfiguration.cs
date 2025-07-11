@@ -10,6 +10,59 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
         {
             builder.HasKey(item => item.Id);
 
+            builder.HasData(
+             new Item
+             {
+                 Id = 1,
+                 Name = "iPhone 14",
+                 Description = "Latest Apple smartphone",
+                 Price = 999.99,
+                 MainGroupId = 1,
+                 SubGroupId = 1,
+                 SubGroup2Id = 1
+             },
+             new Item
+             {
+                 Id = 2,
+                 Name = "Dell XPS 15",
+                 Description = "High performance laptop",
+                 Price = 1500,
+                 MainGroupId = 1,
+                 SubGroupId = 2,
+                 SubGroup2Id = 2
+             },
+             new Item
+             {
+                 Id = 3,
+                 Name = "Men's Casual Shirt",
+                 Description = "Comfortable cotton shirt",
+                 Price = 35.50,
+                 MainGroupId = 2,
+                 SubGroupId = 3,
+                 SubGroup2Id = 3
+             },
+             new Item
+             {
+                 Id = 4,
+                 Name = "Women's Summer Dress",
+                 Description = "Light and breezy",
+                 Price = 45.99,
+                 MainGroupId = 2,
+                 SubGroupId = 4,
+                 SubGroup2Id = 4
+             },
+             new Item
+             {
+                 Id = 5,
+                 Name = "Samsung Galaxy S22",
+                 Description = "Flagship Samsung phone",
+                 Price = 850,
+                 MainGroupId = 1,
+                 SubGroupId = 1,
+                 SubGroup2Id = 1
+             }
+            );
+
             /*
              * Item -> InventoryItemStores (Join table btw store and item)
              * One Item can have many InventoryItemStore.

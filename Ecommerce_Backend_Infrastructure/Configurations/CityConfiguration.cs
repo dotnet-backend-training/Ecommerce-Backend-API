@@ -10,6 +10,14 @@ namespace Ecommerce_Backend_Core.Configurations
         {
             builder.HasKey(city => city.Id);
 
+            builder.HasData(
+                new City { Id = 1, Name = "Cairo", GovernmentId = 1 },
+                new City { Id = 2, Name = "Alexandria", GovernmentId = 1 },
+                new City { Id = 3, Name = "Ramallah", GovernmentId = 2 },
+                new City { Id = 4, Name = "Amman", GovernmentId = 3 },
+                new City { Id = 5, Name = "Beirut", GovernmentId = 4 }
+            );
+
             builder.Property(city => city.Name)
             .IsRequired();
 

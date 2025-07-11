@@ -16,6 +16,14 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                 }
             );
 
+            builder.HasData(
+                new CustomerStore { CustomerId = 1, StoreId = 1 },
+                new CustomerStore { CustomerId = 2, StoreId = 1 },
+                new CustomerStore { CustomerId = 3, StoreId = 2 },
+                new CustomerStore { CustomerId = 4, StoreId = 3 },
+                new CustomerStore { CustomerId = 5, StoreId = 3 }
+            );
+
             // CustomerStore -> Customer
             builder.HasOne(customerStore => customerStore.Customer) //  Each CustomerStore references one Customer (User)
             .WithMany(customer => customer.CustomerStores) // Each User can be associated with many CustomerStores

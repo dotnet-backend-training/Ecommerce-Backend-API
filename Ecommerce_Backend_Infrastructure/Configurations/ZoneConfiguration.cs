@@ -15,6 +15,13 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
         {
             builder.HasKey(zone => zone.Id);
 
+            builder.HasData(
+                new Zone { Id = 1, Name = "Cairo Zone", CityId = 1, GovernmentId = 1 },
+                new Zone { Id = 2, Name = "Alex Zone", CityId = 2, GovernmentId = 1 },
+                new Zone { Id = 3, Name = "Ramallah Zone", CityId = 3, GovernmentId = 2 },
+                new Zone { Id = 4, Name = "Amman Zone", CityId = 4, GovernmentId = 3 },
+                new Zone { Id = 5, Name = "Beirut Zone", CityId = 5, GovernmentId = 4 }
+            );
             /*
             * Zone -> Users
             * One Zone can have many Users.
@@ -55,7 +62,6 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
             .WithMany(city=> city.Zones)
             .HasForeignKey(zone => zone.CityId)
             .OnDelete(DeleteBehavior.Restrict);
-
         }
     }
 }

@@ -14,6 +14,59 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                }
             );
 
+            builder.HasData(
+                new ShoppingCartItems
+                {
+                    ItemId = 1,
+                    CustomerId = 1,
+                    StoreId = 1,
+                    UnitId = 1,
+                    Quantity = 2,
+                    CreatedAt = new DateTime(2025, 7, 11, 10, 0, 0),
+                    UpdatedAt = null
+                },
+                new ShoppingCartItems
+                {
+                    ItemId = 2,
+                    CustomerId = 1,
+                    StoreId = 2,
+                    UnitId = 1,
+                    Quantity = 5,
+                    CreatedAt = new DateTime(2025, 7, 10, 9, 30, 0),
+                    UpdatedAt = new DateTime(2025, 7, 10, 12, 0, 0)
+                },
+                new ShoppingCartItems
+                {
+                    ItemId = 3,
+                    CustomerId = 2,
+                    StoreId = 2,
+                    UnitId = 2,
+                    Quantity = 1.5,
+                    CreatedAt = new DateTime(2025, 7, 9, 14, 0, 0),
+                    UpdatedAt = null
+                },
+                new ShoppingCartItems
+                {
+                    ItemId = 4,
+                    CustomerId = 3,
+                    StoreId = 3,
+                    UnitId = 3,
+                    Quantity = 10,
+                    CreatedAt = new DateTime(2025, 7, 8, 16, 30, 0),
+                    UpdatedAt = new DateTime(2025, 7, 9, 8, 0, 0)
+                },
+                new ShoppingCartItems
+                {
+                    ItemId = 5,
+                    CustomerId = 4,
+                    StoreId = 4,
+                    UnitId = 4,
+                    Quantity = 3,
+                    CreatedAt = new DateTime(2025, 7, 7, 11, 15, 0),
+                    UpdatedAt = null
+                }
+            );
+
             /*
             * ShoppingCartItems -> item
             * One ShoppingCartItems related to One Item.

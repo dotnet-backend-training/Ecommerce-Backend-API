@@ -15,6 +15,14 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                 }
             );
 
+            builder.HasData(
+               new ItemUnit { ItemId = 1, UnitId = 1, Factor = 1 },  // iPhone 14 - Piece
+               new ItemUnit { ItemId = 2, UnitId = 1, Factor = 1 },  // Dell XPS 15 - Piece
+               new ItemUnit { ItemId = 3, UnitId = 1, Factor = 1 },  // Men's Casual Shirt - Piece
+               new ItemUnit { ItemId = 4, UnitId = 1, Factor = 1 },  // Women's Summer Dress - Piece
+               new ItemUnit { ItemId = 5, UnitId = 1, Factor = 1 }   // Samsung Galaxy S22 - Piece
+            );
+
             /*
             * ItemUnit -> item  (Join table btw unit and item)
             * One ItemUnit related to one Item.

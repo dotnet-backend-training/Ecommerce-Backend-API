@@ -1,7 +1,14 @@
 
+using Ecommerce_Backend_Core.Interfaces;
+using Ecommerce_Backend_Core.Models;
 using Ecommerce_Backend_Infrastructure.Data;
+using Ecommerce_Backend_Infrastructure.Repositories;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
+using System.Reflection;
 
 namespace Ecommerce_Backend_API
 {
@@ -27,8 +34,25 @@ namespace Ecommerce_Backend_API
                 );
 
             builder.Services.AddDbContext<AppDbContext>((options)=> {
-                options.UseSqlServer(connectionString);
+                options.UseSqlServer(connectionString).EnableSensitiveDataLogging();
             });
+
+            // FluentValidation service
+            builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            // IAuthRepository service
+            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+            // Identity service 
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric= true;
+                options.Password.RequiredUniqueChars = 0;
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
 
             var app = builder.Build();
 
