@@ -1,4 +1,5 @@
 
+using Ecommerce_Backend_API.Errors;
 using Ecommerce_Backend_Core.Interfaces;
 using Ecommerce_Backend_Core.Models;
 using Ecommerce_Backend_Infrastructure.Data;
@@ -54,6 +55,9 @@ namespace Ecommerce_Backend_API
             })
             .AddEntityFrameworkStores<AppDbContext>();
 
+            // GlobalExecptionHandler service
+            builder.Services.AddExceptionHandler<GlobalExecptionHandler>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -67,6 +71,8 @@ namespace Ecommerce_Backend_API
 
             app.UseAuthorization();
 
+            // Enable global execption handling middleware in the request pipeline
+            app.UseExceptionHandler("/Errors");
 
             app.MapControllers();
 

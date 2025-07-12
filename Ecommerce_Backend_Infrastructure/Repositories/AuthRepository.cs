@@ -1,6 +1,8 @@
 ﻿using Ecommerce_Backend_Core.Interfaces;
 using Ecommerce_Backend_Core.Models;
+using Ecommerce_Backend_Core.Shared;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +20,34 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
             this.userManager = userManager;
         }
 
-        public async Task<string> RegisterAsync(User user, string password)
+        public async Task<ApiResponse<object>> RegisterAsync(User user, string password)
         {
+            var existingUser = await userManager.Users.FirstOrDefaultAsync(
+                dbUser => 
+                string.Equals(dbUser.Email, user.Email, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(dbUser.UserName, user.UserName, StringComparison.OrdinalIgnoreCase)
+             );
+            if(existingUser is not null)
+            {
+                return ApiResponse<object>.FailResponse(
+                   message: "Registration failed",
+                   error: "An account with this email address or Username already exists."
+                );
+            }
             var registerResult = await userManager.CreateAsync(user, password);
             if (registerResult.Succeeded)
             {
-                return "User registered successfully";
+                return ApiResponse<object>.SuccessResponse(
+                  message: "User registered successfully"
+                );
             }
             var errorMessages = registerResult.Errors.Select(
                  (error) => error.Description
             ).ToList();
-            return string.Join(", ", errorMessages);
+            return ApiResponse<object>.FailResponse(
+               message: "Registration failed",
+               error: "An account with this email address already exists."
+            );
         }
 
         public Task<string> LoginAsync(string userName, string password)

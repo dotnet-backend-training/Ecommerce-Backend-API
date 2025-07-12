@@ -23,7 +23,6 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                     Email = "userone@example.com",
                     NormalizedEmail = "USERONE@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
                     SecurityStamp = System.Guid.NewGuid().ToString(),
                     GovernmentId = 1,
                     CityId = 1,
@@ -38,7 +37,6 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                     Email = "usertwo@example.com",
                     NormalizedEmail = "USERTWO@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
                     SecurityStamp = System.Guid.NewGuid().ToString(),
                     GovernmentId = 1,
                     CityId = 2,
@@ -53,7 +51,6 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                     Email = "userthree@example.com",
                     NormalizedEmail = "USERTHREE@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
                     SecurityStamp = System.Guid.NewGuid().ToString(),
                     GovernmentId = 2,
                     CityId = 3,
@@ -68,7 +65,6 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                     Email = "userfour@example.com",
                     NormalizedEmail = "USERFOUR@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
                     SecurityStamp = System.Guid.NewGuid().ToString(),
                     GovernmentId = 2,
                     CityId = 4,
@@ -83,7 +79,6 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                     Email = "userfive@example.com",
                     NormalizedEmail = "USERFIVE@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
                     SecurityStamp = System.Guid.NewGuid().ToString(),
                     GovernmentId = 3,
                     CityId = 5,
@@ -91,6 +86,11 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                     ClassificationId = 3
                 }
             };
+
+            foreach (var user in users)
+            {
+                user.PasswordHash = hasher.HashPassword(user, "Password123!");
+            }
 
             builder.HasData(users);
             /*

@@ -2,6 +2,7 @@
 using Ecommerce_Backend_Core.Interfaces;
 using Ecommerce_Backend_Core.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -43,7 +44,7 @@ namespace Ecommerce_Backend_API.Controllers
                 ClassificationId = registerRequestDto.CustomerClassificationId,
             };
             var result = await _authRepository.RegisterAsync(userModel, registerRequestDto.Password);
-            return new JsonResult(result);
+            return CreatedAtAction(null,result);
         }
     }
 }
