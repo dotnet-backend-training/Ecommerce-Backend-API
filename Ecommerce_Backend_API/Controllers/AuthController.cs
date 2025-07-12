@@ -44,7 +44,15 @@ namespace Ecommerce_Backend_API.Controllers
                 ClassificationId = registerRequestDto.CustomerClassificationId,
             };
             var result = await _authRepository.RegisterAsync(userModel, registerRequestDto.Password);
-            return CreatedAtAction(null,result);
+            if (!result.Success)
+            {
+                return Problem(
+                    statusCode: (int)result.StatusCode,
+                    title: result.Message,
+                    detail: string.Join(", ", result.Errors ?? Enumerable.Empty<string>())
+                );
+            }
+            return CreatedAtAction(null, result);
         }
     }
 }
