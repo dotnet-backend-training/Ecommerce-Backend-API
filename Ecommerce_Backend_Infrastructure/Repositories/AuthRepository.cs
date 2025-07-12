@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Ecommerce_Backend_Core.DTO_s;
 using Ecommerce_Backend_Core.Interfaces;
 using Ecommerce_Backend_Core.Models;
 using Ecommerce_Backend_Core.Shared;
@@ -86,7 +87,7 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
             );
         }
        
-        public async Task<ApiResponse<object>> LoginAsync(
+        public async Task<ApiResponse<LoginResponseDto>> LoginAsync(
             string userName,
             string password
             )
@@ -94,10 +95,10 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
             var user = await userManager.FindByNameAsync(userName);
             if(user is null)
             {
-                return ApiResponse<object>.FailResponse(
+                return ApiResponse<LoginResponseDto>.FailResponse(
                     statusCode: HttpStatusCode.BadRequest,
                     message: "Failed to login.",
-                    error: "Invalid username or password"
+                    error: "Invalid credentials. Please verify your login information and try again."
                  );
             }
             var result = await signInManager.PasswordSignInAsync(
@@ -108,17 +109,17 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
             );
             if (!result.Succeeded)
             {
-                return ApiResponse<object>.FailResponse(
-                statusCode: HttpStatusCode.InternalServerError,
+                return ApiResponse<LoginResponseDto>.FailResponse(
+                statusCode: HttpStatusCode.BadRequest,
                 message: "Failed to login.",
-                error: "Unexpected error occurred while login"
-             );
+                error: "Invalid credentials. Please verify your login information and try again."
+                );
             }
-            return ApiResponse<object>.SuccessResponse(
+            return ApiResponse<LoginResponseDto>.SuccessResponse(
                 statusCode: HttpStatusCode.OK,
                 message: "User login successfully",
-                data: new {
-                AccessToken= GenerateToken(user),
+                data: new LoginResponseDto{
+                    AccessToken= GenerateToken(user),
                 }
             );
         }

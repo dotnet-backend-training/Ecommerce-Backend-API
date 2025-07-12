@@ -53,5 +53,44 @@ namespace Ecommerce_Backend_API.Controllers
             }
             return CreatedAtAction(null, result);
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync(
+            [FromBody] LoginRequestDto loginRequestDto,
+            [FromServices] IValidator<LoginRequestDto> validator
+        )
+        {
+            var validationResult = validator.Validate(loginRequestDto);
+            if (!validationResult.IsValid)
+            {
+                var modelState = new ModelStateDictionary();
+                validationResult.Errors.ForEach(
+                    (error) =>
+                    modelState.AddModelError(
+                        error.PropertyName, error.ErrorMessage
+                    )
+                );
+                return ValidationProblem(modelState);
+            }
+            var loginResult = await _authRepository.LoginAsync(
+                loginRequestDto.Username,
+                loginRequestDto.Password
+             );
+            if (!loginResult.Success)
+            {
+                return Problem(
+                    statusCode: (int) loginResult.StatusCode,
+                    title: loginResult.Message,
+                    detail: string.Join(", ", loginResult.Errors ?? Enumerable.Empty<string>())
+                );
+            }
+            if (loginResult?.Data?.AccessToken is null)
+            {
+                return Unauthorized(
+                "Unauthorized"
+                );
+            }
+            return Ok(loginResult);
+        }
     }
 }

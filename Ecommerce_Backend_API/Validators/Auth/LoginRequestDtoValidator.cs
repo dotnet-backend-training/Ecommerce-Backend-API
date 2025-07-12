@@ -3,15 +3,15 @@ using FluentValidation;
 
 namespace Ecommerce_Backend_API.Validators.Auth
 {
-    public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
+    public class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto>
     {
-        public RegisterRequestValidator() {
-            RuleFor(registerRequest => registerRequest.Username)
+        public LoginRequestDtoValidator() {
+            RuleFor(loginRequest => loginRequest.Username)
             .NotEmpty().WithMessage("Username is required")
             .MinimumLength(3).WithMessage("Username must be at least 3 characters.")
             .MaximumLength(20).WithMessage("Username must not exceed 20 characters.");
 
-            RuleFor(registerRequest => registerRequest.Password)
+            RuleFor(loginRequest => loginRequest.Password)
             .NotEmpty().WithMessage("Password is required")
             .MinimumLength(6).WithMessage("Password must be at least 6 characters.")
             .MaximumLength(100).WithMessage("Password must not exceed 100 characters.")
@@ -23,19 +23,6 @@ namespace Ecommerce_Backend_API.Validators.Auth
             RuleFor(registerRequest => registerRequest.Email)
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Must be a valid email address");
-
-            RuleFor(registerRequest => registerRequest.GovermentCode)
-            .GreaterThan(0).WithMessage("GovermentCode is required and must be a positive number");
-
-            RuleFor(registerRequest => registerRequest.CityCode)
-            .GreaterThan(0).WithMessage("CityCode is required and must be a positive number");
-
-            RuleFor(registerRequest => registerRequest.ZoneCode)
-            .GreaterThan(0).WithMessage("ZoneCode is required and must be a positive number");
-
-            RuleFor(registerRequest => registerRequest.CustomerClassificationId)
-            .GreaterThan(0).WithMessage("CustomerClassificationId is required and must be a positive number");
-
         }
         private bool HaveAtLeastTwoUppercaseLetters(string password)
         {
@@ -47,13 +34,11 @@ namespace Ecommerce_Backend_API.Validators.Auth
         }
         private bool HaveAtLeastTwoDigits(string password)
         {
-           return password.Count(char.IsDigit) >= 2;
+            return password.Count(char.IsDigit) >= 2;
         }
-
         private bool HaveAtLeastOneSpecialChar(string password)
         {
             return password.Count(c => !char.IsLetterOrDigit(c)) >= 1;
         }
-            
     }
 }
