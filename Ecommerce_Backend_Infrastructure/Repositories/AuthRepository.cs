@@ -1,9 +1,16 @@
-﻿using Ecommerce_Backend_Core.Interfaces;
+﻿using Azure.Core;
+using Ecommerce_Backend_Core.Interfaces;
 using Ecommerce_Backend_Core.Models;
 using Ecommerce_Backend_Core.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Ecommerce_Backend_Infrastructure.Repositories
 {
@@ -11,13 +18,38 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IConfiguration configuration;
 
         public AuthRepository(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IConfiguration configuration)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.configuration = configuration;
+        }
+        private string GenerateToken(User user)
+        {
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            };
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(configuration["JWT:Key"])
+            );
+            var credentials = new SigningCredentials(
+                key,
+                SecurityAlgorithms.HmacSha256
+            );
+            var token = new JwtSecurityToken(
+                issuer: configuration["JWT:Issuer"],
+                audience: configuration["JWT:Audience"],
+                claims,
+                signingCredentials: credentials,
+                expires: DateTime.Now.AddMinutes(30)
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public async Task<ApiResponse<object>> RegisterAsync(User user, string password)
@@ -53,6 +85,7 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
                statusCode: HttpStatusCode.InternalServerError
             );
         }
+       
         public async Task<ApiResponse<object>> LoginAsync(
             string userName,
             string password
@@ -81,13 +114,19 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
                 error: "Unexpected error occurred while login"
              );
             }
-            // return token
+            return ApiResponse<object>.SuccessResponse(
+                statusCode: HttpStatusCode.OK,
+                message: "User login successfully",
+                data: new {
+                AccessToken= GenerateToken(user),
+                }
+            );
         }
         public Task<string> ChangePasswordAsync(string email, string oldPassword, string newPassword)
         {
             throw new NotImplementedException();
         }
 
-
+     
     }
 }
