@@ -12,14 +12,14 @@ namespace Ecommerce_Backend_Core.Models
 
         [ForeignKey(nameof(Unit))]
         public int UnitId { get; set; }
-        public Unit Unit { get; set; }
+        public Unit Unit { get; set; } = null!;
 
         [ForeignKey(nameof(Invoice))]
         public int InvoiceId { get; set; }
-        public Invoice Invoice { get; set; }
+        public Invoice Invoice { get; set; } = null!;
 
         [ForeignKey(nameof(Item))]
         public int ItemId { get; set; }
-        public Item Item { get; set; }
+        public Item Item { get; set; } = null!;
     }
 }

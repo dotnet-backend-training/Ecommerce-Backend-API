@@ -19,7 +19,7 @@ namespace Ecommerce_Backend_Infrastructure.Configurations
                  Price = 999.99,
                  MainGroupId = 1,
                  SubGroupId = 1,
-                 SubGroup2Id = 1
+                 SubGroup2Id = 1,
              },
              new Item
              {

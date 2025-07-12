@@ -11,10 +11,10 @@ namespace Ecommerce_Backend_Core.Models
 
         [ForeignKey(nameof(Government))]
         public int GovernmentId { get; set; }
-        public Government Government { get; set; }
+        public Government Government { get; set; } = null!;
 
         [ForeignKey(nameof(City))]
         public int CityId { get; set; }
-        public City City { get; set; }
+        public City City { get; set; } = null!;
     }
 }

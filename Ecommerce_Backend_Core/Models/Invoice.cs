@@ -18,6 +18,6 @@ namespace Ecommerce_Backend_Core.Models
 
         [ForeignKey(nameof(Customer))]
         public int CustomerId { get; set; }
-        public User Customer { get; set; }
+        public User Customer { get; set; } = null!;
     }
 }

@@ -9,10 +9,10 @@ namespace Ecommerce_Backend_Core.Models
 
         [ForeignKey(nameof(Item))]
         public int ItemId { get; set; }
-        public Item Item { get; set; }
+        public Item Item { get; set; } = null!;
 
         [ForeignKey(nameof(Unit))]
         public int UnitId { get; set; }
-        public Unit Unit { get; set; }
+        public Unit Unit { get; set; } = null!;
     }
 }

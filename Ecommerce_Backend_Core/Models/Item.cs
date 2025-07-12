@@ -16,14 +16,14 @@ namespace Ecommerce_Backend_Core.Models
 
         [ForeignKey(nameof(MainGroup))]
         public int MainGroupId { get; set; }
-        public MainGroup MainGroup { get; set; }
+        public MainGroup MainGroup { get; set; } = null!;
 
         [ForeignKey(nameof(SubGroup))]
         public int SubGroupId { get; set; }
-        public SubGroup SubGroup { get; set; }
+        public SubGroup SubGroup { get; set; } = null!;
 
         [ForeignKey(nameof(SubGroup2))]
         public int SubGroup2Id { get; set; }
-        public SubGroup2 SubGroup2 { get; set; }
+        public SubGroup2 SubGroup2 { get; set; } = null!;
     }
 }

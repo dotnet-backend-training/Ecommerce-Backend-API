@@ -12,14 +12,14 @@ namespace Ecommerce_Backend_Core.Models
 
         [ForeignKey(nameof(Store))]
         public int StoreId { get; set; }
-        public Store Store { get; set; }
+        public Store Store { get; set; } = null!;
 
         [ForeignKey(nameof(Item))]
         public int ItemId {  get; set; }
-        public Item Item { get; set; }
+        public Item Item { get; set; } = null!;
 
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
-        public User User { get; set; } 
+        public User User { get; set; } = null!;
     }
 }

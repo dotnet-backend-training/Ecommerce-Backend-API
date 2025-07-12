@@ -7,7 +7,7 @@ namespace Ecommerce_Backend_Core.Models
     public class City
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public ICollection<User> Users { get; set; } = new HashSet<User>();
         public ICollection<Zone> Zones { get; set; } = new HashSet<Zone>();
         public ICollection<Store> Stores { get; set; } = new HashSet<Store>();
