@@ -3,32 +3,21 @@ using Ecommerce_Backend_Core.Models;
 using Ecommerce_Backend_Core.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ecommerce_Backend_Infrastructure.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
         private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
-        public AuthRepository(UserManager<User> userManager)
+        public AuthRepository(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager)
         {
             this.userManager = userManager;
-        }
-
-        public Task<string> ChangePasswordAsync(string email, string oldPassword, string newPassword)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> LoginAsync(string userName, string password)
-        {
-            throw new NotImplementedException();
+            this.signInManager = signInManager;
         }
 
         public async Task<ApiResponse<object>> RegisterAsync(User user, string password)
@@ -64,8 +53,41 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
                statusCode: HttpStatusCode.InternalServerError
             );
         }
+        public async Task<ApiResponse<object>> LoginAsync(
+            string userName,
+            string password
+            )
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            if(user is null)
+            {
+                return ApiResponse<object>.FailResponse(
+                    statusCode: HttpStatusCode.BadRequest,
+                    message: "Failed to login.",
+                    error: "Invalid username or password"
+                 );
+            }
+            var result = await signInManager.PasswordSignInAsync(
+                user,
+                password,
+                isPersistent: false,
+                lockoutOnFailure: false
+            );
+            if (!result.Succeeded)
+            {
+                return ApiResponse<object>.FailResponse(
+                statusCode: HttpStatusCode.InternalServerError,
+                message: "Failed to login.",
+                error: "Unexpected error occurred while login"
+             );
+            }
+            // return token
+        }
+        public Task<string> ChangePasswordAsync(string email, string oldPassword, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
 
 
-       
     }
 }

@@ -2,7 +2,6 @@
 using Ecommerce_Backend_Core.Interfaces;
 using Ecommerce_Backend_Core.Models;
 using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 

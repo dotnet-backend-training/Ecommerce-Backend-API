@@ -11,7 +11,7 @@ namespace Ecommerce_Backend_Core.Interfaces
     public interface IAuthRepository
     {
         Task<ApiResponse<object>> RegisterAsync(User user, string password);
-        Task<string> LoginAsync (string userName, string password);
+        Task<ApiResponse<object>> LoginAsync (string userName, string password);
         Task<string> ChangePasswordAsync(string email, string oldPassword, string newPassword);
     }
 }
