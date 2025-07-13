@@ -1,6 +1,7 @@
 ﻿using Ecommerce_Backend_Core.DTO_s;
 using Ecommerce_Backend_Core.Interfaces;
 using Ecommerce_Backend_Core.Models;
+using Ecommerce_Backend_Core.Shared;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -43,12 +44,12 @@ namespace Ecommerce_Backend_API.Controllers
                 ClassificationId = registerRequestDto.CustomerClassificationId,
             };
             var result = await _authRepository.RegisterAsync(userModel, registerRequestDto.Password);
-            if (!result.Success)
+            if (result is FailResponse fail)
             {
                 return Problem(
                     statusCode: (int)result.StatusCode,
                     title: result.Message,
-                    detail: string.Join(", ", result.Errors ?? Enumerable.Empty<string>())
+                    detail: string.Join(", ", fail.Errors ?? [])
                 );
             }
             return CreatedAtAction(null, result);
@@ -76,15 +77,17 @@ namespace Ecommerce_Backend_API.Controllers
                 loginRequestDto.Username,
                 loginRequestDto.Password
              );
-            if (!loginResult.Success)
+            if (loginResult is FailResponse fail)
             {
-                return Problem(
+                return StatusCode(
                     statusCode: (int) loginResult.StatusCode,
-                    title: loginResult.Message,
-                    detail: string.Join(", ", loginResult.Errors ?? Enumerable.Empty<string>())
+                    new{
+                        title = loginResult.Message,
+                        detail =  fail.Errors
+                    }
                 );
             }
-            if (loginResult?.Data?.AccessToken is null)
+            if ((loginResult as SuccessResponse<LoginResponseDto>)?.Data?.AccessToken is null)
             {
                 return Unauthorized(
                 "Unauthorized"

@@ -1,54 +1,88 @@
-﻿
-using System.Net;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Net;
 
 namespace Ecommerce_Backend_Core.Shared
 {
-    public class ApiResponse<T>
+    public abstract record ApiResponse
     {
         public bool Success { get; set; }
-        public string? Message { get; set; } = string.Empty;
-        public T? Data { get; set; }
-        public List<string>? Errors { get; set; }    
+        public string Message { get; set; } = string.Empty;
         public HttpStatusCode StatusCode { get; set; }
 
-        public static ApiResponse<T> SuccessResponse(T data, HttpStatusCode statusCode, string? message = null)
+        protected ApiResponse(
+            bool success,
+            string message,
+            HttpStatusCode statusCode)
         {
-            return new ApiResponse<T> {
-                Success = true,
-                Message = message,
-                Data = data,
-                StatusCode = statusCode
-            };
+            Success = success;
+            Message = message;
+            StatusCode = statusCode;
         }
-        public static ApiResponse<T> SuccessResponse(HttpStatusCode statusCode, string? message = null)
+    }
+    public record SuccessResponse : ApiResponse
+    {
+        public SuccessResponse(
+            HttpStatusCode statusCode,
+            string message)
+            : base(true, message, statusCode) { }
+
+        public static SuccessResponse Create(
+            string message = "Success",
+            HttpStatusCode statusCode = HttpStatusCode.OK)
+            => new(statusCode, message);
+    }
+
+    public record SuccessResponse<T> : ApiResponse
+    {
+        public T? Data { get; set; }
+
+        public SuccessResponse(
+            HttpStatusCode statusCode,
+            string message,
+            T data)
+            : base(true, message, statusCode)
         {
-            return new ApiResponse<T>
-            {
-                Success = true,
-                Message = message,
-                StatusCode = statusCode
-            };
+            Data = data;
         }
 
-        public static ApiResponse<T> FailResponse(HttpStatusCode statusCode, List<string> errors, string? message = null)
+        public static SuccessResponse<T> Create(
+            T data,
+            string message = "Success",
+            HttpStatusCode statusCode = HttpStatusCode.OK)
+            => new(statusCode, message, data);
+    }
+
+    public record FailResponse : ApiResponse
+    {
+        public List<string> Errors { get; } = [];
+        public FailResponse(
+            HttpStatusCode statusCode,
+            string message,
+             List<string> errors)
+            : base(false, message, statusCode)
         {
-            return new ApiResponse<T>{
-                Success = false,
-                Message = message,
-                Errors = errors,
-                StatusCode = statusCode
-            };
+            Errors = errors;
         }
-        public static ApiResponse<T> FailResponse(HttpStatusCode statusCode, string error, string? message = null)
+
+        public FailResponse(
+            HttpStatusCode statusCode,
+            string message,
+            string error
+            )
+            : base(false, message, statusCode)
         {
-            return new ApiResponse<T>
-            {
-                Success = false,
-                Message = message,
-                Errors = new List<string> { error },
-                StatusCode = statusCode
-            };
+            Errors = [error];
         }
+
+        public static FailResponse CreateWithErrors(
+            string message,
+            List<string> errors,
+            HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+            => new(statusCode, message, errors);
+
+        public static FailResponse CreateWithError(
+            string message,
+            string error,
+            HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+            => new(statusCode: statusCode, message: message, error: error);
     }
 }

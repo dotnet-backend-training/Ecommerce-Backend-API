@@ -11,24 +11,23 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Ecommerce_Backend_Infrastructure.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
-        private readonly IConfiguration configuration;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IConfiguration _configuration;
 
         public AuthRepository(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IConfiguration configuration)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.configuration = configuration;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._configuration = configuration;
         }
         private string GenerateToken(User user)
         {
@@ -37,15 +36,15 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration["JWT:Key"]!)
+                Encoding.UTF8.GetBytes(_configuration["JWT:Key"]!)
             );
             var credentials = new SigningCredentials(
                 key,
                 SecurityAlgorithms.HmacSha256
             );
             var token = new JwtSecurityToken(
-                issuer: configuration["JWT:Issuer"],
-                audience: configuration["JWT:Audience"],
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
                 claims,
                 signingCredentials: credentials,
                 expires: DateTime.Now.AddMinutes(30)
@@ -53,55 +52,55 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<ApiResponse<object>> RegisterAsync(User user, string password)
+        public async Task<ApiResponse> RegisterAsync(User user, string password)
         {
             var normalizedEmail = user.Email?.ToUpperInvariant();
             var normalizedUserName = user.UserName?.ToUpperInvariant();
-            var existingUser = await userManager.Users.FirstOrDefaultAsync(dbUser =>
+            var existingUser = await _userManager.Users.FirstOrDefaultAsync(dbUser =>
                 (normalizedEmail != null && dbUser.NormalizedEmail == normalizedEmail) ||
                 (normalizedUserName != null && dbUser.NormalizedUserName == normalizedUserName)
             );
             if (existingUser is not null)
             {
-                return ApiResponse<object>.FailResponse(
+                return FailResponse.CreateWithError(
                    message: "Registration failed",
                    error: "An account with this email address or Username already exists.",
                    statusCode: HttpStatusCode.Conflict
                 );
             }
-            var registerResult = await userManager.CreateAsync(user, password);
+            var registerResult = await _userManager.CreateAsync(user, password);
             if (registerResult.Succeeded)
             {
-                return ApiResponse<object>.SuccessResponse(
+                return new SuccessResponse(
                   message: "User registered successfully",
                   statusCode: HttpStatusCode.Created
                 );
             }
             var errorMessages = registerResult.Errors.Select(
-                 (error) => error.Description
-            ).ToList();
-            return ApiResponse<object>.FailResponse(
+                error => error.Description   
+             ).ToList();
+            return FailResponse.CreateWithErrors(
                message: "Registration failed",
                errors: errorMessages,
                statusCode: HttpStatusCode.InternalServerError
             );
         }
        
-        public async Task<ApiResponse<LoginResponseDto>> LoginAsync(
+        public async Task<ApiResponse> LoginAsync(
             string userName,
             string password
             )
         {
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
             if(user is null)
             {
-                return ApiResponse<LoginResponseDto>.FailResponse(
+                return FailResponse.CreateWithError(
                     statusCode: HttpStatusCode.BadRequest,
                     message: "Failed to login.",
                     error: "Invalid credentials. Please verify your login information and try again."
                  );
             }
-            var result = await signInManager.PasswordSignInAsync(
+            var result = await _signInManager.PasswordSignInAsync(
                 user,
                 password,
                 isPersistent: false,
@@ -109,13 +108,13 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
             );
             if (!result.Succeeded)
             {
-                return ApiResponse<LoginResponseDto>.FailResponse(
+                return FailResponse.CreateWithError(
                 statusCode: HttpStatusCode.BadRequest,
                 message: "Failed to login.",
                 error: "Invalid credentials. Please verify your login information and try again."
                 );
             }
-            return ApiResponse<LoginResponseDto>.SuccessResponse(
+            return new SuccessResponse<LoginResponseDto>(
                 statusCode: HttpStatusCode.OK,
                 message: "User login successfully",
                 data: new LoginResponseDto{
