@@ -33,11 +33,11 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
         private string GenerateToken(User user)
         {
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration["JWT:Key"])
+                Encoding.UTF8.GetBytes(configuration["JWT:Key"]!)
             );
             var credentials = new SigningCredentials(
                 key,
