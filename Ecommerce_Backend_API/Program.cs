@@ -5,6 +5,7 @@ using Ecommerce_Backend_Core.Models;
 using Ecommerce_Backend_Infrastructure.Data;
 using Ecommerce_Backend_Infrastructure.Repositories;
 using FluentValidation;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -44,6 +45,14 @@ namespace Ecommerce_Backend_API
             // IAuthRepository service
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
+            // IItemRepository service
+            builder.Services.AddScoped<IItemRepository, ItemRepository>();
+
+            // Route Configure 
+            builder.Services.Configure<RouteOptions>(
+                options => options.LowercaseUrls = true
+            );
+
             // Identity service 
             builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
             {
@@ -57,6 +66,10 @@ namespace Ecommerce_Backend_API
 
             // GlobalExecptionHandler service
             builder.Services.AddExceptionHandler<GlobalExecptionHandler>();
+
+            // TypeAdapterConfig (Mapster) service 
+            var globalTypeAdapterConfig = TypeAdapterConfig.GlobalSettings;
+            builder.Services.AddSingleton(globalTypeAdapterConfig);
 
             var app = builder.Build();
 

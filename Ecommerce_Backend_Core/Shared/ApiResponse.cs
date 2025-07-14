@@ -33,7 +33,7 @@ namespace Ecommerce_Backend_Core.Shared
 
     public record SuccessResponse<T> : ApiResponse
     {
-        public T? Data { get; set; }
+        public T Data { get; set; }
 
         public SuccessResponse(
             HttpStatusCode statusCode,
