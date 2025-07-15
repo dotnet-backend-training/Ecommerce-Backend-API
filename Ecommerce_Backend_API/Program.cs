@@ -48,6 +48,9 @@ namespace Ecommerce_Backend_API
             // IItemRepository service
             builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
+            // ICartRepository service
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
+
             // Route Configure 
             builder.Services.Configure<RouteOptions>(
                 options => options.LowercaseUrls = true

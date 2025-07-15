@@ -37,7 +37,7 @@ namespace Ecommerce_Backend_API.Controllers
                         successResponse
                     );
                 }
-                return Ok(getAllItemsResult);
+                return Ok(successResponse);
             }
             return StatusCode(500, "Unexpected response type.");
         }

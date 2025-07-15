@@ -23,6 +23,7 @@ namespace Ecommerce_Backend_API.Controllers
             [FromBody] RegisterRequestDto registerRequestDto,
             [FromServices] IValidator<RegisterRequestDto> validator) 
         {
+            // TODO: Validation for codes in RegisterRequestDto
             var validationResult = validator.Validate(registerRequestDto);
             if (!validationResult.IsValid)
             {
