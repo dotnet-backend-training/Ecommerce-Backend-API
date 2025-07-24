@@ -8,5 +8,6 @@ namespace Ecommerce_Backend_Core.Interfaces
     {
        Task<ApiResponse> AddBulkQuantityToCartAsync(CartItemDto cartItemDto, int userId) ;
        Task<ApiResponse> AddOneQuantityToCartAsync(CartItemDto cartItemDto, int userId);
+       Task<ApiResponse> GetAllItemsFromCart(int customerId);
     }
 }

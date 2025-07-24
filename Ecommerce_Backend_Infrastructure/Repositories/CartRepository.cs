@@ -21,7 +21,7 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
 
         public async Task<ApiResponse> AddBulkQuantityToCartAsync(
             CartItemDto cartItemDto,
-            int? userId
+            int userId
             )
         {
             var item = await _appDbContext.Items.FindAsync(
@@ -78,7 +78,7 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
 
         public async Task<ApiResponse> AddOneQuantityToCartAsync(
             CartItemDto cartItemDto,
-            int? userId)
+            int userId)
         {
             var item = await _appDbContext.Items.FindAsync(cartItemDto.ItemCode);
             var store = await _appDbContext.Stores.FindAsync(
@@ -127,6 +127,36 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
             return SuccessResponse.Create(
                 message: "Item added to cart successfully.",
                 statusCode: HttpStatusCode.Created
+            );
+        }
+
+        public async Task<ApiResponse> GetAllItemsFromCart(int customerId)
+        {
+            var shoppingCartItems = await _appDbContext.ShoppingCartItems
+                .Where(shoppingCartItem => shoppingCartItem.CustomerId == customerId)
+                .Include(shoppingCartItem => shoppingCartItem.Item)
+                .Include(shoppingCartItem => shoppingCartItem.Unit)
+                .Include(shoppingCartItem => shoppingCartItem.Store)
+                .ToListAsync();
+            if (shoppingCartItems.Count < 1)
+            {
+                return SuccessResponse.Create(
+                   statusCode: HttpStatusCode.OK,
+                   message: "No items found."
+                );
+            }
+            IEnumerable<UserCartItemDto> shoppingCartItemsDto = shoppingCartItems.Select(
+                shoppingCartItem => new UserCartItemDto()
+                {
+                    Name = shoppingCartItem.Item.Name,
+                    Price = shoppingCartItem.Item.Price,
+                    ItemUnit = shoppingCartItem.Unit.Name
+                }
+            ).ToList();
+            return SuccessResponse<IEnumerable<UserCartItemDto>>.Create(
+                statusCode: HttpStatusCode.OK,
+                message: "Items retrieved successfully.",
+                data: shoppingCartItemsDto
             );
         }
     }
