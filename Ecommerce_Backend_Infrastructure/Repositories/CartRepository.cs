@@ -140,9 +140,10 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
                 .ToListAsync();
             if (shoppingCartItems.Count < 1)
             {
-                return SuccessResponse.Create(
+                return SuccessResponse<IEnumerable<UserCartItemDto>>.Create(
                    statusCode: HttpStatusCode.OK,
-                   message: "No items found."
+                   message: "No items found.",
+                   data: []
                 );
             }
             IEnumerable<UserCartItemDto> shoppingCartItemsDto = shoppingCartItems.Select(
@@ -150,7 +151,8 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
                 {
                     Name = shoppingCartItem.Item.Name,
                     Price = shoppingCartItem.Item.Price,
-                    ItemUnit = shoppingCartItem.Unit.Name
+                    ItemUnit = shoppingCartItem.Unit.Name,
+                    Quantity = shoppingCartItem.Quantity
                 }
             ).ToList();
             return SuccessResponse<IEnumerable<UserCartItemDto>>.Create(

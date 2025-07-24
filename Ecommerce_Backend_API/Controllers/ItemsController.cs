@@ -33,6 +33,8 @@ namespace Ecommerce_Backend_API.Controllers
             {
                 if(!successResponse.Data.Items.Any())
                 {
+                    // TODO: Should be changed to ok 
+                    // the resouce exist but empty
                     return NotFound(
                         successResponse
                     );

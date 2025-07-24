@@ -98,5 +98,49 @@ namespace Ecommerce_Backend_API.Controllers
                 return StatusCode(500, "Something wrong happened");
             }
         }
+
+        [HttpGet("GetAllCartItems")]
+        public async Task<IActionResult> GetAllCartItems()
+        {
+            var token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized(new { message = "Unauthorized" });
+            }
+            try
+            {
+                var userId = ExtractClaims.ExtractUserId(token);
+                if (!userId.HasValue)
+                {
+                    return Unauthorized(new { message = "Invalid token" });
+                }
+                var getAllItemsFromCartResult = await _cartRepository.GetAllItemsFromCart(userId.Value);
+                if (getAllItemsFromCartResult is FailResponse failResponse)
+                {
+                    return Problem(
+                      statusCode: (int)failResponse.StatusCode,
+                      title: failResponse.Message,
+                      detail: string.Join(", ", failResponse.Errors)
+                    );
+                }
+                else if (getAllItemsFromCartResult is
+                    SuccessResponse<IEnumerable<UserCartItemDto>> successResponse)
+                {
+                    if (!successResponse.Data.Any())
+                    {
+                        return Ok(successResponse);
+                    }
+                    return Ok(successResponse);
+                }
+                else
+                {
+                    return StatusCode(500, "Unexpected response type.");
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Something wrong happened");
+            }
+        }
     }
 }
