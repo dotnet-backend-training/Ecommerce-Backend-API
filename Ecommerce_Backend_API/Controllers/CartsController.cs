@@ -57,5 +57,46 @@ namespace Ecommerce_Backend_API.Controllers
                 return StatusCode(500, "Something wrong happened");
             }
         }
+
+        [HttpPost("AddItemToCart")]
+        public async Task<IActionResult> AddOneQuantityToCartAsync(
+            [FromBody] CartItemDto cartItemDto
+        )
+        {
+            // TODO: Validation for cartItemDto
+            var token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized(new { message = "Unauthorized" });
+            }
+            try
+            {
+                var userId = ExtractClaims.ExtractUserId(token);
+                if (!userId.HasValue)
+                {
+                    return Unauthorized(new { message = "Invalid token" });
+                }
+                var addOneQuantityToCartResult = await _cartRepository.AddOneQuantityToCartAsync(
+                    cartItemDto,
+                    userId.Value
+                );
+                if (addOneQuantityToCartResult is FailResponse failResponse)
+                {
+                    return Problem(
+                        statusCode: (int)failResponse.StatusCode,
+                        title: failResponse.Message,
+                        detail: string.Join(", ", failResponse.Errors)
+                    );
+                }
+                else
+                {
+                    return CreatedAtAction(null, addOneQuantityToCartResult as SuccessResponse);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Something wrong happened");
+            }
+        }
     }
 }

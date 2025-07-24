@@ -21,7 +21,7 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
 
         public async Task<ApiResponse> AddBulkQuantityToCartAsync(
             CartItemDto cartItemDto,
-            int userId
+            int? userId
             )
         {
             var item = await _appDbContext.Items.FindAsync(
@@ -78,7 +78,7 @@ namespace Ecommerce_Backend_Infrastructure.Repositories
 
         public async Task<ApiResponse> AddOneQuantityToCartAsync(
             CartItemDto cartItemDto,
-            int userId)
+            int? userId)
         {
             var item = await _appDbContext.Items.FindAsync(cartItemDto.ItemCode);
             var store = await _appDbContext.Stores.FindAsync(
